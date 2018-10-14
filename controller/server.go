@@ -36,7 +36,7 @@ func Server(wg *sync.WaitGroup, ch chan int) {
     l := EventListener{ch, &state}
     go l.listenEvents()
 
-    pc, err := net.ListenPacket("udp", ":1053")
+    pc, err := net.ListenPacket("udp", "0.0.0.0:1053")
 	if err != nil {
         log.Print(err)
         os.Exit(1)

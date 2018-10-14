@@ -4,6 +4,7 @@ import (
     "./controller"
 )
 
+
 func main(){
     ctrl := controller.MakeController()
     var wg sync.WaitGroup
