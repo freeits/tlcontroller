@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phases>
+    <phase>
+        <id>1</id>
+        <name>Phase 1</name>
+        <time>
+            <total_seconds>4</total_seconds>
+            <min_seconds>3</min_seconds>
+            <ending_seconds>3</ending_seconds>
+        </time>
+        <next_phase>2</next_phase>
+    </phase>
+    <phase>
+        <id>2</id>
+        <name>Phase 2</name>
+        <time>
+            <total_seconds>4</total_seconds>
+            <min_seconds>3</min_seconds>
+            <ending_seconds>5</ending_seconds>
+        </time>
+        <next_phase>3</next_phase>
+    </phase>
+    <phase>
+        <id>3</id>
+        <name>Phase 3</name>
+        <time>
+            <total_seconds>4</total_seconds>
+            <min_seconds>3</min_seconds>
+            <ending_seconds>3</ending_seconds>
+        </time>
+        <next_phase>1</next_phase>
+    </phase>
+</phases>
