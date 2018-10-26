@@ -1,2 +1,3 @@
-# controller
-The emulator of the traffic light controller
+# traffic_lights
+
+A traffic lights controller emulator.

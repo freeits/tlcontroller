@@ -43,11 +43,11 @@ type XmlPhases struct {
     XmlPhases []XmlPhase `xml:"phase"`
 }
 
-// Load phases configuration from an xml (data/controller.xml)
+// Load phases from XML-config (data/controller.xml)
 
-func loadPhasesXml() XmlPhases {
+func loadPhases(configfile string) XmlPhases {
 
-    phasesPath, err := filepath.Abs("data/controller.xml")
+    phasesPath, err := filepath.Abs(configfile)
     if err != nil {
         fmt.Println(err)
         os.Exit(1)
