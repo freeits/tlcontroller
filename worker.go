@@ -8,13 +8,13 @@ import (
 
 const LOCAL_MODE = 1
 
-type Controller struct {
+type Worker struct {
     cycle Cycle
 }
 
-func (m Controller) Run(wg *sync.WaitGroup, ch chan int) {
+func (m *Worker) work(wg *sync.WaitGroup, ch chan int) {
     defer wg.Done()
-    log.Print("Controller started")
+    log.Print("Worker started")
     for true {
         phase := m.cycle.nextPhase()
         phase_time := time.Duration(phase.time.total_seconds) * time.Second
@@ -25,8 +25,8 @@ func (m Controller) Run(wg *sync.WaitGroup, ch chan int) {
     }
 }
 
-func MakeController() Controller {
-    xmlPhases := loadPhasesXml()
-    cycle := makeCycle(xmlPhases)
-    return Controller{cycle}
+func makeWorker(configfile string) Worker {
+    phases := loadPhases(configfile)
+    cycle := makeCycle(phases)
+    return Worker{cycle}
 }

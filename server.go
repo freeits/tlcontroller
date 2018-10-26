@@ -29,14 +29,24 @@ func (l *EventListener) listenEvents() {
     }
 }
 
-func Server(wg *sync.WaitGroup, ch chan int) {
+type Server struct {
+    addr string
+}
+
+func makeServer(addr string) Server {
+    return Server{addr}
+}
+
+func (s *Server) serve(wg *sync.WaitGroup, ch chan int) {
     defer wg.Done()
+
+    log.Printf("Server is listening on %v", s.addr)
 
     state := ControllerState{}
     l := EventListener{ch, &state}
     go l.listenEvents()
 
-    pc, err := net.ListenPacket("udp", "0.0.0.0:1053")
+    pc, err := net.ListenPacket("udp", s.addr)
 	if err != nil {
         log.Print(err)
         os.Exit(1)
