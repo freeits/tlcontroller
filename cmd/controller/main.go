@@ -1,7 +1,7 @@
 package main
 
 import (
-    "github.com/khokhlin/traffic_lights"
+    "github.com/khokhlin/tlcontroller"
     "flag"
 )
 
