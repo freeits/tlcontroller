@@ -13,20 +13,14 @@ func serve(pc net.PacketConn, addr net.Addr, buf []byte) {
 }
 
 type ControllerState struct {
-    phase int
-    mode int
+    phase uint16
+    mode uint16
+    mutex *sync.Mutex
 }
 
-type EventListener struct {
-    ch chan int
-    state *ControllerState
-}
-
-func (l *EventListener) listenEvents() {
-    for {
-        l.state.phase = <-l.ch
-        l.state.mode = <-l.ch
-    }
+func NewControllerState() *ControllerState{
+    mutex := &sync.Mutex{}
+    return &ControllerState{mutex: mutex}
 }
 
 type Server struct {
@@ -37,14 +31,10 @@ func makeServer(addr string) Server {
     return Server{addr}
 }
 
-func (s *Server) serve(wg *sync.WaitGroup, ch chan int) {
+func (s *Server) serve(wg *sync.WaitGroup, state *ControllerState) {
     defer wg.Done()
 
     log.Printf("Server is listening on %v", s.addr)
-
-    state := ControllerState{}
-    l := EventListener{ch, &state}
-    go l.listenEvents()
 
     pc, err := net.ListenPacket("udp", s.addr)
 	if err != nil {
@@ -59,8 +49,10 @@ func (s *Server) serve(wg *sync.WaitGroup, ch chan int) {
 		if err != nil {
 			continue
 		}
-        binary.LittleEndian.PutUint16(buf, uint16(state.phase))
-        binary.LittleEndian.PutUint16(buf[2:], uint16(state.mode))
+        state.mutex.Lock()
+        binary.LittleEndian.PutUint16(buf, state.phase)
+        binary.LittleEndian.PutUint16(buf[2:], state.mode)
+        state.mutex.Unlock()
         log.Printf("Sending data: %v\n", buf)
 		go serve(pc, addr, buf)
 	}

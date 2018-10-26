@@ -8,8 +8,9 @@ func Run(configfile string, addr string){
 
     var wg sync.WaitGroup
     wg.Add(2)
-    ch := make(chan int)
-    go worker.work(&wg, ch)
-    go server.serve(&wg, ch)
+
+    state := NewControllerState()
+    go worker.work(&wg, state)
+    go server.serve(&wg, state)
     wg.Wait()
 }

@@ -12,7 +12,7 @@ type Worker struct {
     cycle Cycle
 }
 
-func (m *Worker) work(wg *sync.WaitGroup, ch chan int) {
+func (m *Worker) work(wg *sync.WaitGroup, state *ControllerState) {
     defer wg.Done()
     log.Print("Worker started")
     for true {
@@ -20,8 +20,10 @@ func (m *Worker) work(wg *sync.WaitGroup, ch chan int) {
         phase_time := time.Duration(phase.time.total_seconds) * time.Second
         time.Sleep(phase_time)
         log.Printf("Phase %v is active", phase.name)
-        ch <- phase.id
-        ch <- LOCAL_MODE
+        state.mutex.Lock()
+        state.phase = phase.id
+        state.mode = LOCAL_MODE
+        state.mutex.Unlock()
     }
 }
 

@@ -15,7 +15,7 @@ type PhaseTime struct {
 }
 
 type Phase struct {
-    id int
+    id uint16
     name string
     time PhaseTime
     next_phase *Phase
@@ -32,7 +32,7 @@ type XmlPhaseTime struct {
 
 type XmlPhase struct {
     XMLName xml.Name `xml:"phase"`
-    Id int `xml:"id"`
+    Id uint16 `xml:"id"`
     Name string `xml:"name"`
     Time XmlPhaseTime `xml:"time"`
     NextPhase int `xml:"next_phase"`
